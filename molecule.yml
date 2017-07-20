@@ -1,0 +1,58 @@
+---
+dependency:
+  name: galaxy
+  requirements_file: tests/requirements.yml
+ansible:
+  verbose: false
+  playbook: tests/test.yml
+driver:
+  name: vagrant
+  name: docker
+docker:
+  containers:
+    - name: docker-centos-flume-file
+      ansible_groups:
+        - file_sink
+      hostname: centos-flume-file
+      image: centos
+      image_version: 7
+      privileged: True
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      command: "/usr/sbin/init"
+    - name: docker-centos-flume-hdfs
+      ansible_groups:
+        - hdfs_sink
+      hostname: centos-flume-hdfs
+      image: centos
+      image_version: 7
+      privileged: True
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      command: "/usr/sbin/init"
+vagrant:
+  platforms:
+    - name: centos7
+      box: centos/7
+    - name: ubuntu/trusty64
+      box: trusty64
+      box_url: https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 512
+        cpus: 2
+  instances:
+    - name: vagrant-flume-centos-file
+      ansible_groups:
+        - file_sink
+    - name: vagrant-flume-centos-hdfs
+      ansible_groups:
+        - hdfs_sink
+verifier:
+  name: testinfra

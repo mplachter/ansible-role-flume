@@ -1,0 +1,78 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+{% for agent in agents %}
+{% set agent_name = agent.name %}
+{% set source_name = agent.source.name %}
+{% set channel_name = agent.channel.name %}
+
+{{ agent_name }}.sources = {{ source_name }}
+{{ agent_name }}.channels = {{ channel_name }}
+{{ agent_name }}.sinks = {% set space = joiner(" ") %}{% for sink in agent.sinks %}{{ space() }}{{ sink.name }}{% endfor %} 
+
+{% for key, value in agent.source.iteritems() %}
+{% if key != 'name' %}
+{% if key == 'type' %}
+{{ agent_name }}.sources.{{ source_name }}.type = {{ agent.source.type }} 
+{% elif value is iterable and value is not string %}
+{{ agent_name }}.sources.{{ source_name }}.{{ key | replace("_", ".") }} = {% set comma = joiner(", ") %}{% for val in value %}{{ comma() }}{{val}}{% endfor %} 
+{% else %}
+{{ agent_name }}.sources.{{ source_name }}.{{ key | replace("_", ".") }} = {{ value }} 
+{% endif %}
+{% endif %}
+{% endfor %}
+{{ agent_name }}.sources.{{ source_name }}.channels = {{ channel_name }}
+
+{% for key, value in agent.channel.iteritems() %}
+{% if key != 'name' and value != '' %}
+{{ agent_name }}.channels.{{ channel_name }}.{{ key }} = {{ value }}
+{% endif %}
+{% endfor %}
+
+{% for sink in agent.sinks %}
+{% set sink_name = sink.name %}
+{% set sink_type = sink.type %}
+{% for key, value in sink.iteritems() %}
+{% if key != 'name' %}
+{% if key == 'type' %}
+{{ agent_name }}.sinks.{{ sink_name }}.{{ key }} = {{ value }} 
+{% elif value is iterable and value is not string %}
+{{ agent_name }}.sinks.{{ sink_name }}.{{ key | replace("_", ".") }} = {% set comma = joiner(", ") %}{% for val in value %}{{ comma() }}{{val}}{% endfor %}  
+{% else %}
+{{ agent_name }}.sinks.{{ sink_name }}.{{ key | replace("_", ".") }} = {{ value }} 
+{% endif %}
+{% endif %}
+{% endfor %}
+{{ agent_name }}.sinks.{{ sink_name }}.channel = {{ channel_name }}
+{% endfor %}
+
+{% if agent.sink_group is defined %}
+{% set sinkgroup_name = agent.sink_group.name %}
+{{ agent_name }}.sinkgroups = {{ sinkgroup_name }}
+{{ agent_name }}.sinkgroups.{{ sinkgroup_name }}.sinks = {% set space = joiner(" ") %}{% for sink in agent.sinks %}{{ space() }}{{ sink.name }}{% endfor %} 
+{% for key, value in agent.sink_group.iteritems() %}
+{% if key != 'name' %}
+{% if value is iterable and value is not string %}
+{{ agent_name }}.sinkgroups.{{ key | replace("_", ".") }} = {% set comma = joiner(", ") %}{% for val in value %}{{ comma() }}{{val}}{% endfor %}  
+{% else %}
+{{ agent_name }}.sinkgroups.{{ key | replace("_", ".") }} = {{ value }} 
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% endfor %}

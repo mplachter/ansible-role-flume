@@ -1,0 +1,67 @@
+---
+- name: Download and Uncompress Apache Flume
+  unarchive:
+    creates: "{{installation_path}}/apache-flume-{{ version }}-bin/bin/flume-ng"
+    src: "{{download_path}}"
+    dest: "{{installation_path}}"
+    remote_src: True
+
+- name: Configure Apache Flume
+  template:
+    src: flume-conf.properties.j2
+    dest: "{{ installation_path }}/apache-flume-{{ version }}-bin/conf/flume-conf.properties"
+    owner: "{{owner}}"
+    group: "{{group}}"
+    mode: 0644
+    force: yes
+  notify:
+    - Restart Apache Flume
+  when: apache_flume_config is not defined
+
+- name: Copy Apache Flume Config File
+  copy:
+    src: "{{apache_flume_config}}"
+    dest: "{{ installation_path }}/apache-flume-{{ version }}-bin/conf/flume-conf.properties"
+    owner: "{{owner}}"
+    group: "{{group}}"
+    mode: 0644
+    force: yes
+  notify:
+    - Restart Apache Flume
+  when: apache_flume_config is defined
+
+- name: Flume enviroment variable template
+  template:
+    src: flume-env.sh.j2
+    dest: "{{ installation_path }}/apache-flume-{{ version }}-bin/conf/flume-env.sh"
+    owner: "{{owner}}"
+    group: "{{group}}"
+    force: yes
+  notify:
+    - Restart Apache Flume
+
+- name: Change Permissions And Create softlink
+  file:
+    path: "{{ installation_path }}/apache-flume-{{ version }}-bin"
+    src: "{{ installation_path }}/apache-flume-{{ version }}-bin"
+    dest: "{{ installation_path }}/flume"
+    state: link
+    force: yes
+    owner: "{{owner}}"
+
+- name: Create Flume Service
+  template:
+    src: apache-flume.service.j2
+    dest: "/etc/systemd/system/apache-flume.service"
+    owner: "{{owner}}"
+    group: "{{group}}"
+    force: yes
+
+- name: Download Native Hadoop Libaries
+  unarchive:
+    creates: '{{installation_path}}/flume/plugin.d/hdfs/native/libhadoop.so.1.0.0'
+    src: http://apache.javapipe.com/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz
+    dest: /tmp
+    remote_src: True
+  when: hdfs_libs == true
+  notify: Native_hdfs_Libs

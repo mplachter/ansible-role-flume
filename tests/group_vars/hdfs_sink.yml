@@ -1,0 +1,85 @@
+---
+mirror_url: http://apache.mirrors.ionfish.org/flume
+version: 1.7.0
+download_path: /tmp
+installation_path: /usr/local
+owner: root
+group: root
+
+java_heap_xms: 125
+java_heap_xmx: 250
+hdfs_libs: true
+
+agents:
+- name: agent
+  source:
+    name: kafkaSource
+    type: org.apache.flume.source.kafka.KafkaSource
+    kafka_consumer_group_id: flume
+    kafka_consumer_auto_offset_reset: latest
+    kafka_consumer_max_partition_fetch_bytes: 1048576
+    kafka_consumer_heartbeat_interval_ms: 3000
+    kafka_consumer_session_timeout_ms: 30000
+    kafka_consumer_request_timeout_ms: 40000
+    kafka_consumer_fetch_max_wait_ms: 500
+    kafka_bootstrap_servers:
+      - 127.0.0.1:9092
+      - 0.0.0.0:9092
+    kafka_topics:
+      - topic1
+      - topic2
+  channel:
+    name: kakfaChannel
+    type: memory
+    capacity: 1000000
+    transactionCapacity: 100000
+  sinks:
+    - name: kafkaHDFSSink1
+      type: hdfs
+      hdfs_path: "s3n://GFGJFSHFJHFGFHSBJ:fdjhSFUYGSF65678+-saigfew123@hdfs/%{topic}/%y/%m/%d/%H"
+      hdfs_filePrefix: FlumeData
+      hdfs_inUseSuffix: .tmp
+      hdfs_rollInterval: 30
+      hdfs_rollSize: 1024
+      hdfs_rollCount: 10
+      hdfs_idleTimeout: 0
+      hdfs_batchSize: 100
+      hdfs_fileType: "SequenceFile"
+      hdfs_maxOpenFiles: 5000
+      hdfs_callTimeout: 10000
+      hdfs_threadsPoolSize: 10
+      hdfs_rollTimerPoolSize: 1
+      hdfs_round: false
+      hdfs_roundValue: 1
+      hdfs_roundUnit: second
+      hdfs_timeZone: Local Time
+      hdfs_useLocalTimeStamp: false
+      hdfs_closeTries: 0
+      hdfs_retryInterval: 180
+    - name: kafkaHDFSSink2
+      type: hdfs
+      hdfs_path: "s3n://GFGJFSHFJHFGFHSBJ:fdjhSFUYGSF65678+-saigfew123@hdfs/%{topic}/%y/%m/%d/%H"
+      hdfs_filePrefix: FlumeData
+      hdfs_inUseSuffix: .tmp
+      hdfs_rollInterval: 30
+      hdfs_rollSize: 1024
+      hdfs_rollCount: 10
+      hdfs_idleTimeout: 0
+      hdfs_batchSize: 100
+      hdfs_fileType: "SequenceFile"
+      hdfs_maxOpenFiles: 5000
+      hdfs_callTimeout: 10000
+      hdfs_threadsPoolSize: 10
+      hdfs_rollTimerPoolSize: 1
+      hdfs_round: false
+      hdfs_roundValue: 1
+      hdfs_roundUnit: second
+      hdfs_timeZone: Local Time
+      hdfs_useLocalTimeStamp: false
+      hdfs_closeTries: 0
+      hdfs_retryInterval: 180
+  sink_group:
+    name: sinkgroup1
+    processor_type: load_balance
+    processor_backoff: false
+    processor_selector: round_robin

@@ -1,0 +1,23 @@
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# If this file is placed at FLUME_CONF_DIR/flume-env.sh, it will be sourced
+# during Flume startup.
+
+# Enviroment variables can be set here.
+
+# export JAVA_HOME=/usr/lib/jvm/java-6-sun
+
+# Give Flume more memory and pre-allocate, enable remote monitoring via JMX
+export JAVA_OPTS="-Xms{{java_heap_xms}}m -Xmx{{java_heap_xmx}}m -Dcom.sun.management.jmxremote"
+
+# Let Flume write raw event data and configuration information to its log files for debugging
+# purposes. Enabling these flags is not recommended in production,
+# as it may result in logging sensitive user information or encryption secrets.
+export JAVA_OPTS="$JAVA_OPTS -Dorg.apache.flume.log.rawdata=true -Dorg.apache.flume.log.printconfig=true "
+
+# Note that the Flume conf directory is always included in the classpath.
+#FLUME_CLASSPATH=""

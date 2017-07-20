@@ -1,0 +1,59 @@
+---
+mirror_url: http://apache.mirrors.ionfish.org/flume
+version: 1.7.0
+download_path: /tmp
+installation_path: /usr/local
+owner: root
+group: root
+
+java_heap_xms: 125
+java_heap_xmx: 250
+hdfs_libs: true
+
+agents:
+- name: agent
+  source:
+    name: httpSource
+    type: http
+    port: 8080
+  channel:
+    name: httpChannel
+    type: memory
+    capacity: 1000000
+    transactionCapacity: 100000
+  sinks:
+    - name: httpFileSink
+      type: file_roll
+      sink_directory: "/usr/tmp"
+      sink_rollInterval: 300
+- name: agentkafka
+  source:
+    name: kafkaSource
+    type: org.apache.flume.source.kafka.KafkaSource
+    kafka_consumer_group_id: flume
+    kafka_consumer_auto_offset_reset: latest
+    kafka_bootstrap_servers:
+      - 127.0.0.1:9092
+      - 0.0.0.0:9092
+    kafka_topics:
+      - topic1
+      - topic2
+  channel:
+      name: kafkaChannel
+      type: memory
+      capacity: 1000000
+      transactionCapacity: 100000
+  sinks:
+    - name: kafkaFileSink1
+      type: file_roll
+      sink_directory: "/usr/tmp"
+      sink_rollInterval: 300
+    - name: kafkaFileSink2
+      type: file_roll
+      sink_directory: "/usr/tmp"
+      sink_rollInterval: 300
+  sink_group:
+    name: sinkgroup1
+    processor_type: load_balance
+    processor_backoff: false
+    processor_selector: round_robin

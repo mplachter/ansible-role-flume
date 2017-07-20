@@ -1,0 +1,5 @@
+---
+# vars file for mplachter.apache-flume
+#http://apache.mirrors.ionfish.org/flume/1.7.0/apache-flume-1.7.0-bin.tar.gz
+download_name : 'apache-flume-{{ version }}-bin.tar.gz'
+download_path : '{{ mirror_url }}/{{ version }}/{{download_name}}'

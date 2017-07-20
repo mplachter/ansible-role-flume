@@ -1,0 +1,13 @@
+[Unit]
+Description=Apache Flume Application On %I
+After=network.target
+
+[Service]
+Type=simple
+User={{owner}}
+WorkingDirectory={{installation_path}}/flume
+PIDFile=/var/run/flume/%i.pid
+ExecStart=/bin/sh -c '. /etc/profile.d/java-oracle.sh; {{installation_path}}/flume/bin/flume-ng agent -n agent -c {{installation_path}}/flume/conf -f {{installation_path}}/flume/conf/flume-conf.properties'
+
+[Install]
+WantedBy=multi-user.target
