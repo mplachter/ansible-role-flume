@@ -1,9 +1,9 @@
 [![Ansible Role](https://img.shields.io/ansible/role/19355.svg)](https://galaxy.ansible.com/mplachter/apache-flume/) [![Build Status](https://travis-ci.org/mplachter/apache-flume.svg?branch=master)](https://travis-ci.org/mplachter/apache-flume)
 
-Role Name
+Apache-Flume
 =========
 
-Ansible Role For Deploying and Configuring Apache Flume
+Ansible Role for deploying and configuring Apache Flume
 
 * Deploys Apache Flume
 * Configures Apache Flume
@@ -22,55 +22,55 @@ Requirements
 Role Variables
 --------------
 
-* Java Vars
+* Java `vars`
   ```
   java_heap_xms: 125
   java_heap_xmx: 250
   ```
-* Apache Flume Vars
+* Apache Flume `vars`
   ```
   mirror_url: http://apache.mirrors.ionfish.org/flume
   version: 1.7.0
   ```
-* Linux Folder/Path Install Vars
+* Linux folder/path install `vars`
   ```
   download_path: /tmp
   installation_path: /usr/local
   owner: root
   group: root
   ```
-* Apache Flume Config Vars
-  * Please Consult [Flume User Guide](https://flume.apache.org/FlumeUserGuide.html)
-  * Currently Configuration Will Allow
+* Apache Flume configuration `vars`
+  * Please consult [Flume User Guide](https://flume.apache.org/FlumeUserGuide.html)
+  * Currently configuration will allow
     * Agents
-      * **Service Will Only Be Created For 'agent'**
-      * Mutiple
-      * Will Need To Manually Create More Services To Run These Currently
-    * Source
-      * Only Allowing One Source For Each Agent Currently
-    * Channel
-      * Only Allowing One Channel For Each Agent Currently
-    * Sinks
-      * Mutiple
-    * Sinkgroup
-      * Will Add All Sinks In Agent To Sinkgroup
-  * Due To High Flume Config Possibilies Please Read The Following
+      * **Service Will Only Be Created For `agent`**
+      * mutiple
+      * Will need to manually create more services to run these currently
+    * source
+      * Only allowing one source for each `agent` currently
+    * channel
+      * Only allowing one channel for each `agent` currently
+    * sinks
+      * mutiple
+    * sinkgroup
+      * Will add all `sinks` in `agent` to `sinkgroup`
+  * Due to high Flume configuration possibilies please read the following
     * Please substitute "." for "_" in your flume configuration for **Property Names**
       * **Values Do Not Need The Substitute**
       * Example
         * `kafka_consumer_group_id: testflume`
       * Result
         * `agent.source.kafka.consumer.group.id = testflume`
-  * Can Pass `apache_flume_config` Var to copy configuration over
+  * Can pass `apache_flume_config` var to copy configuration over
     * Example
       * `apache_flume_config: file/flume-conf.properties`
     * Result
       * This will copy the **flume-conf.properties** from your file directory onto target machine(s)
-* Extra Vars
-  * HDFS Native Libs
+* Extra variables
+  * HDFS native libaries
     * `hdfs_libs = true`
-      * This will pull down HDFS Native Libs and place them in `plugin.d/hdfs/native/`
-* Example Vars
+      * This will pull down `HDFS Native Libs` and place them in `plugin.d/hdfs/native/`
+* Example variables
   ```
   mirror_url: http://apache.mirrors.ionfish.org/flume
   version: 1.7.0
