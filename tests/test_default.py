@@ -45,16 +45,19 @@ def test_apache_flume_java_heap(File):
     c_file = File('/usr/local/flume/conf/flume-env.sh')
     assert c_file.exists
     assert c_file.is_file
+    assert c_file.contains('-Xms125m -Xmx250m')
 
 
 def test_apache_flume_check_hdfs_libs(File):
-    c_file = File('/usr/local/flume/conf/flume-env.sh')
-    assert c_file.contains('-Xms125m -Xmx250m')
+    c_file = File('/usr/local/flume/plugin.d/hdfs/native/libhadoop.so.1.0.0')
+    assert c_file.exists
+    assert c_file.is_file
 
 
 def test_apache_flume_systemd(File):
     c_file = File('/etc/systemd/system/apache-flume.service')
-    assert c_file.contains('/usr/local/flume/bin/flume-ng agent')
+    assert c_file.exists
+    assert c_file.is_file
 
 
 @pytest.mark.parametrize("nodetype,teststring", [

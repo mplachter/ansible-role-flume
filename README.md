@@ -14,10 +14,10 @@ Requirements
 ------------
 
 * Running
-  * Ansible
+  * Ansible 2.3+
 * Testing
   * Docker/Vagrant
-  * Molecule
+  * Molecule = 1.2.5
 
 Role Variables
 --------------
