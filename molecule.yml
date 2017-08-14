@@ -14,8 +14,8 @@ docker:
       ansible_groups:
         - file_sink
       hostname: centos-flume-file
-      image: centos
-      image_version: 7
+      image: mplachter/docker-centos7-molecule
+      image_version: latest
       privileged: True
       cap_add:
         - SYS_ADMIN
@@ -26,8 +26,8 @@ docker:
       ansible_groups:
         - hdfs_sink
       hostname: centos-flume-hdfs
-      image: centos
-      image_version: 7
+      image: mplachter/docker-centos7-molecule
+      image_version: latest
       privileged: True
       cap_add:
         - SYS_ADMIN

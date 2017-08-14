@@ -1,6 +1,6 @@
 galaxy_info:
   author: Matthew Plachter
-  description: Ansible Role To Install And Configure Apache Flume
+  description: Ansible role to install and configure Apache Flume
   company: your company (optional)
   license:
    - MIT
