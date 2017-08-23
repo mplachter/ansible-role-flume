@@ -1,4 +1,4 @@
-[![Ansible Role](https://img.shields.io/ansible/role/19860.svg)](https://galaxy.ansible.com/mplachter/flume/) [![Build Status](https://travis-ci.org/mplachter/ansible-role-flume.svg?branch=master)](https://travis-ci.org/mplachter/ansible-role-flume)
+[![Ansible Role](https://img.shields.io/ansible/role/19868.svg)](https://galaxy.ansible.com/mplachter/flume/) [![Build Status](https://travis-ci.org/mplachter/ansible-role-flume.svg?branch=master)](https://travis-ci.org/mplachter/ansible-role-flume)
 Apache-Flume
 =========
 
