@@ -60,7 +60,7 @@
 - name: Download Native Hadoop Libaries
   unarchive:
     creates: '{{installation_path}}/flume/plugin.d/hdfs/native/libhadoop.so.1.0.0'
-    src: http://apache.javapipe.com/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz
+    src: https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz
     dest: /tmp
     remote_src: True
   when: hdfs_libs == true
