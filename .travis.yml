@@ -9,7 +9,7 @@ before_install:
   - sudo apt-get -qq update
 
 install:
-  - pip install molecule
+  - pip install "molecule==1.25.0"
   - pip install docker
 
 script:
