@@ -10,6 +10,7 @@ before_install:
 
 install:
   - pip install "molecule==1.25.0"
+  - pip install -U "ansible==2.3.2.0"
   - pip install docker
 
 script:
