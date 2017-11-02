@@ -167,7 +167,7 @@ Example Playbook
 
     - hosts: all
       roles:
-        - role: ansible-role-apache-flume
+        - role: mplachter.flume
 
 License
 -------
